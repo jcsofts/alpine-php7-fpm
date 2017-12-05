@@ -29,12 +29,9 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   php7-xdebug php7-apcu \
   curl \
   openssl \
-  supervisor \
   && rm -rf /var/cache/apk/* \
   && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
   && mkdir -p /var/run/php-fpm \
-  && mkdir -p /var/log/supervisor \
-  && mkdir -p /etc/supervisor/conf.d \
   && sed -i \
           -e "s/;listen.mode = 0660/listen.mode = 0666/g" \
           -e "s/listen = 127.0.0.1:9000/listen = [::]:9000/g" \
@@ -43,7 +40,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   && rm -Rf /var/www/* \
   && mkdir -p /var/www/html/
 
-ADD conf/supervisord.conf /etc/supervisord.conf
+#ADD conf/supervisord.conf /etc/supervisord.conf
 
 ADD scripts/start.sh /start.sh
 ADD scripts/pull /usr/bin/pull
