@@ -19,10 +19,8 @@ ENV fpm_conf /etc/php7/php-fpm.d/www.conf
           #-e "s/;listen.owner = www-data/listen.owner = nginx/g" \
           #-e "s/;listen.group = www-data/listen.group = nginx/g" \
 # Add repos
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-  && apk update \
-  && apk upgrade \
-  && apk add git php7 php7-phar php7-curl \
+RUN apk update \
+  && apk add php7 php7-phar php7-curl \
   php7-fpm php7-json php7-zlib php7-xml php7-dom php7-ctype php7-opcache php7-zip php7-iconv \
   php7-pdo php7-pdo_mysql php7-mysqli php7-pdo_sqlite php7-pdo_pgsql php7-mbstring php7-session \
   php7-gd php7-mcrypt php7-openssl php7-sockets php7-posix php7-ldap php7-simplexml \
@@ -30,7 +28,6 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   curl \
   openssl \
   && rm -rf /var/cache/apk/* \
-  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
   && mkdir -p /var/run/php-fpm \
   && sed -i \
           -e "s/;listen.mode = 0660/listen.mode = 0666/g" \
