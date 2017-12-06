@@ -5,19 +5,8 @@ MAINTAINER JCSoft <jcsoft@aliyun.com>
 
 ENV fpm_conf /etc/php7/php-fpm.d/www.conf
 
+COPY scripts/start.sh /usr/local/bin/start.sh
 
-
-          #-e "s/;catch_workers_output\s*=\s*yes/catch_workers_output = yes/g" \
-          #-e "s/pm.max_children = 5/pm.max_children = 4/g" \
-          #-e "s/pm.start_servers = 2/pm.start_servers = 3/g" \
-          #-e "s/pm.min_spare_servers = 1/pm.min_spare_servers = 2/g" \
-          #-e "s/pm.max_spare_servers = 3/pm.max_spare_servers = 4/g" \
-          #-e "s/;pm.max_requests = 500/pm.max_requests = 200/g" \
-          #-e "s/user = www-data/user = nginx/g" \
-          #-e "s/group = www-data/group = nginx/g" \
-
-          #-e "s/;listen.owner = www-data/listen.owner = nginx/g" \
-          #-e "s/;listen.group = www-data/listen.group = nginx/g" \
 # Add repos
 RUN apk update \
   && apk add php7 php7-phar php7-curl \
@@ -35,16 +24,16 @@ RUN apk update \
           -e "s/^;clear_env = no$/clear_env = no/" \
           ${fpm_conf} \
   && rm -Rf /var/www/* \
-  && mkdir -p /var/www/html/
+  && mkdir -p /var/www/html/ \
+  && rm -rf /var/cache/apk/* \
+  && chmod 755 /usr/local/bin/start.sh 
 
-#ADD conf/supervisord.conf /etc/supervisord.conf
 
-ADD scripts/start.sh /start.sh
+
 #ADD scripts/pull /usr/bin/pull
-#ADD scripts/push /usr/bin/push
-RUN chmod 755 /start.sh 
+#ADD scripts/push /usr/bin/
 
 
 EXPOSE 9000
 
-CMD ["/start.sh"]
+CMD ["/usr/local/bin/start.sh"]
