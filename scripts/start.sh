@@ -19,6 +19,7 @@ if [[ "$ERRORS" != "1" ]] ; then
   sed -i "s/;php_flag[display_errors] = off/php_flag[display_errors] = off/g" /etc/php7/php-fpm.d/www.conf
 else
  sed -i "s/;php_flag[display_errors] = off/php_flag[display_errors] = on/g" /etc/php7/php-fpm.d/www.conf
+ sed -i "s/;php_admin_value[error_log] = \/var\/log\/php\/$pool.error.log/php_admin_value[error_log] = \/var\/log\/php\/$pool.error.log/g" /etc/php7/php-fpm.d/www.conf
  sed -i "s/display_errors = Off/display_errors = On/g" /etc/php7/php.ini
  if [ ! -z "$ERROR_REPORTING" ]; then sed -i "s/error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT/error_reporting = $ERROR_REPORTING/g" /etc/php7/php.ini; fi
  sed -i "s#;error_log = syslog#error_log = /var/log/php/error.log#g" /etc/php7/php.ini
