@@ -14,7 +14,7 @@ RUN apk update \
   php7-pdo php7-pdo_mysql php7-mysqli php7-pdo_sqlite php7-pdo_pgsql php7-mbstring php7-session \
   php7-gd php7-mcrypt php7-openssl php7-sockets php7-posix php7-ldap php7-simplexml php7-tokenizer \
   php7-xdebug php7-apcu \
-  curl \
+  curl supervisor \
   openssl \
   && rm -rf /var/cache/apk/* \
   && mkdir -p /var/run/php-fpm \
@@ -28,7 +28,7 @@ RUN apk update \
   && rm -rf /var/cache/apk/* \
   && chmod 755 /usr/local/bin/start.sh 
 
-
+COPY conf/supervisord.conf /etc/supervisord.conf
 
 #ADD scripts/pull /usr/bin/pull
 #ADD scripts/push /usr/bin/
