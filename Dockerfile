@@ -4,6 +4,7 @@ MAINTAINER JCSoft <jcsoft@aliyun.com>
 
 
 ENV fpm_conf /etc/php7/php-fpm.d/www.conf
+ENV php_ini /etc/php7/php.ini
 
 COPY scripts/start.sh /usr/local/bin/start.sh
 
@@ -23,6 +24,9 @@ RUN apk update \
           -e "s/listen = 127.0.0.1:9000/listen = [::]:9000/g" \
           -e "s/^;clear_env = no$/clear_env = no/" \
           ${fpm_conf} \
+  && sed -i \
+          -e "s/;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/g" \
+          ${php_ini} \
   && rm -Rf /var/www/* \
   && mkdir -p /var/www/html/ \
   && rm -rf /var/cache/apk/* \
