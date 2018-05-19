@@ -16,7 +16,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   php7-pdo php7-pdo_mysql php7-mysqli php7-pdo_sqlite php7-pdo_pgsql php7-mbstring php7-session \
   php7-gd php7-mcrypt php7-openssl php7-sockets php7-posix php7-ldap php7-simplexml php7-tokenizer \
   php7-xdebug php7-apcu php7-fileinfo php7-imagick php7-intl php7-gmp \
-  curl supervisor \
+  curl supervisor composer \
   openssl \
   && rm -rf /var/cache/apk/* \
   && mkdir -p /var/run/php-fpm \
