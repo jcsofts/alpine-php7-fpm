@@ -16,7 +16,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   php7-pdo php7-pdo_mysql php7-mysqli php7-pdo_sqlite php7-pdo_pgsql php7-mbstring php7-session \
   php7-gd php7-mcrypt php7-openssl php7-sockets php7-posix php7-ldap php7-simplexml php7-tokenizer \
   php7-xdebug php7-apcu php7-fileinfo php7-imagick php7-intl php7-gmp \
-  curl supervisor composer \
+  curl supervisor \
   openssl \
   && rm -rf /var/cache/apk/* \
   && mkdir -p /var/run/php-fpm \
@@ -31,7 +31,12 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   && rm -Rf /var/www/* \
   && mkdir -p /var/www/html/ \
   && rm -rf /var/cache/apk/* \
-  && chmod 755 /usr/local/bin/start.sh 
+  && chmod 755 /usr/local/bin/start.sh \
+  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+  && php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+  && php composer-setup.php \
+  && php -r "unlink('composer-setup.php');" \
+  && mv composer.phar /usr/local/bin/composer
 
 COPY conf/supervisord.conf /etc/supervisord.conf
 
