@@ -21,6 +21,10 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposit
   && rm -rf /var/cache/apk/* \
   && mkdir -p /var/run/php-fpm \
   && sed -i \
+          -e "s/pm.max_children = 5/pm.max_children = 10/g" \
+          -e "s/pm.start_servers = 2/pm.start_servers = 3/g" \
+          -e "s/pm.min_spare_servers = 1/pm.min_spare_servers = 2/g" \
+          -e "s/pm.max_spare_servers = 3/pm.max_spare_servers = 4/g" \
           -e "s/;listen.mode = 0660/listen.mode = 0666/g" \
           -e "s/listen = 127.0.0.1:9000/listen = [::]:9000/g" \
           -e "s/^;clear_env = no$/clear_env = no/" \
