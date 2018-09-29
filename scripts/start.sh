@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Disable Strict Host checking for non interactive git clones
 
@@ -50,36 +50,24 @@ fi
 XdebugFile='/etc/php7/conf.d/xdebug.ini'
 
 
-if [[ "$ENABLE_XDEBUG" == "1" ]] ; then
+if [ "$ENABLE_XDEBUG" == "1" ] ; then
   echo "Enabling xdebug"
     # See if file contains xdebug text.
-    if grep -q ";zend_extension=xdebug.so" "$XdebugFile"; then
-      sed -i "s/;zend_extension=xdebug.so/zend_extension=xdebug.so/g" $XdebugFile
-      if grep -q xdebug.remote_enable "$XdebugFile"; then
-        echo "Xdebug remote already enabled... skipping"
-      else
-        echo "xdebug.remote_enable=1 "  >> $XdebugFile
-        echo "xdebug.remote_log=/tmp/xdebug.log"  >> $XdebugFile
-        echo "xdebug.remote_autostart=false "  >> $XdebugFile # I use the xdebug chrome extension instead of using autostart
-        # echo "xdebug.remote_host=localhost "  >> $XdebugFile
-        # echo "xdebug.remote_port=9000 "  >> $XdebugFile
-        # NOTE: xdebug.remote_host is not needed here if you set an environment variable in docker-compose like so `- XDEBUG_CONFIG=remote_host=192.168.111.27`.
-        #       you also need to set an env var `- PHP_IDE_CONFIG=serverName=docker`
-      fi
+    if [ -f $XdebugFile ]; then
+        echo "Xdebug already enabled... skipping"
     else
-      echo "Xdebug already enabled... skipping"
+      sed -i "s/;zend_extension=xdebug.so/zend_extension=xdebug.so/g" $XdebugFile
+      echo "xdebug.remote_enable=1 "  >> $XdebugFile
+      echo "xdebug.remote_log=/tmp/xdebug.log"  >> $XdebugFile
+      echo "xdebug.remote_autostart=false "  >> $XdebugFile # I use the xdebug chrome extension instead of using autostart
+      # echo "xdebug.remote_host=localhost "  >> $XdebugFile
+      # echo "xdebug.remote_port=9000 "  >> $XdebugFile
+      # NOTE: xdebug.remote_host is not needed here if you set an environment variable in docker-compose like so `- XDEBUG_CONFIG=remote_host=192.168.111.27`.
+      #       you also need to set an env var `- PHP_IDE_CONFIG=serverName=docker`
     fi
-
 else
-  if [ -f $XdebugFile ]; then
-      if grep -q ";zend_extension=xdebug.so" "$XdebugFile"; then
-        echo "Xdebug already disabled... skipping"
-      else
-        sed -i "s/zend_extension=xdebug.so/;zend_extension=xdebug.so/g" $XdebugFile
-      fi
-  fi
+  rm -rf $XdebugFile
 fi
-
 
 
 # Start supervisord and services
