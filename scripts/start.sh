@@ -78,7 +78,7 @@ if [ ! -z "$PUID" ]; then
   adduser -D -S -h /var/cache/nginx -s /sbin/nologin -G nginx -u ${PUID} nginx
 else
   if [ -z "$SKIP_CHOWN" ]; then
-    chown -Rf www-data:www-data /var/www/html
+    chown -Rf nginx:nginx /var/www/html
   fi
 fi
 
