@@ -35,6 +35,7 @@ RUN apk update \
           -e "s/;session.save_path = \"\/tmp\"/session.save_path = \"\/tmp\"/g" \
           ${php_ini} \
   && rm -Rf /var/www/* \
+  && rm /etc/php7/conf.d/xdebug.ini \
   && mkdir -p /var/www/html/ \
   && chmod 755 /usr/local/bin/start.sh \
   && addgroup nginx \
